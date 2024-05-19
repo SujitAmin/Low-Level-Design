@@ -1,4 +1,4 @@
-package com.example.restfulwebservices.user;
+package com.example.restfulwebservices.user.controller;
 
 
 
@@ -6,20 +6,18 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.restfulwebservices.user.exception.UserNotFoundException;
+import com.example.restfulwebservices.user.bean.User;
+import com.example.restfulwebservices.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 // this is controller.
 @RestController
-public class UserJPAResource {
+public class UserControllerJPA {
 
     @Autowired
     private UserRepository userRepository;
@@ -57,10 +55,8 @@ public class UserJPAResource {
     @PostMapping("/jpa/users")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
         User savedUser = userRepository.save(user);
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
                 .toUri();
-
         return ResponseEntity.created(location).build();
 
     }

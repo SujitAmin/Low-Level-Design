@@ -1,14 +1,17 @@
-package com.example.restfulwebservices.filtering;
+package com.example.restfulwebservices.filtering.bean;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonFilter("SomeBeanFilter")
 public class SomeBean {
-
+    @JsonProperty("field1")
     private String field1;
 
+    @JsonProperty("field2")
     private String field2;
 
+    @JsonProperty("field3")
     private String field3;
 
     public SomeBean(String field1, String field2, String field3) {

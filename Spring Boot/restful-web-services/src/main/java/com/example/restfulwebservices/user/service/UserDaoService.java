@@ -1,5 +1,6 @@
-package com.example.restfulwebservices.user;
+package com.example.restfulwebservices.user.service;
 
+import com.example.restfulwebservices.user.bean.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class UserDaoService {
+public class UserDaoService implements UserService {
     private static List<User> users = new ArrayList<>();
     private static int usersCount = 3;
 
@@ -23,10 +24,12 @@ public class UserDaoService {
         users.add(new User(3, "Jack", new Date()));
     }
 
+    @Override
     public List<User> findAllUsers() {
         return users;
     }
 
+    @Override
     public User addUser(User user) {
         if (user.getId() == null) {
             user.setId(++usersCount);
@@ -35,6 +38,7 @@ public class UserDaoService {
         return user;
     }
 
+    @Override
     public User findUserById(int id) {
         for (User user : users) {
             if (user.getId() == id) {
@@ -44,6 +48,7 @@ public class UserDaoService {
         return null;
     }
 
+    @Override
     public User deleteById(int id) {
         Iterator<User> iterator = users.iterator();
         while (iterator.hasNext()) {

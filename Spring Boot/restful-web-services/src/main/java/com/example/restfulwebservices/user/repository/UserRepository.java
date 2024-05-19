@@ -1,5 +1,6 @@
-package com.example.restfulwebservices.user;
+package com.example.restfulwebservices.user.repository;
 
+import com.example.restfulwebservices.user.bean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

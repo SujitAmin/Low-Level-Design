@@ -1,6 +1,8 @@
-package com.example.restfulwebservices.user;
+package com.example.restfulwebservices.user.controller;
 
-import com.example.restfulwebservices.exception.ExceptionResponse;
+import com.example.restfulwebservices.user.exception.UserNotFoundException;
+import com.example.restfulwebservices.user.bean.User;
+import com.example.restfulwebservices.user.service.UserDaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 
 @Validated
 @RestController
-public class UserResource {
+public class UserController {
 
     @Autowired
     private UserDaoService userDaoService;
 
-    public UserResource(UserDaoService userDaoService) {
+    public UserController(UserDaoService userDaoService) {
         this.userDaoService = userDaoService;
     }
 

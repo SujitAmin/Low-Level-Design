@@ -1,9 +1,10 @@
-package com.example.restfulwebservices.filtering;
+package com.example.restfulwebservices.filtering.controller;
 
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.restfulwebservices.filtering.bean.SomeBean;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

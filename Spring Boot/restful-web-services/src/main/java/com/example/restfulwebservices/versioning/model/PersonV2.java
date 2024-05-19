@@ -1,4 +1,4 @@
-package com.example.restfulwebservices.versioning;
+package com.example.restfulwebservices.versioning.model;
 
 public class PersonV2 {
     private Name name;
