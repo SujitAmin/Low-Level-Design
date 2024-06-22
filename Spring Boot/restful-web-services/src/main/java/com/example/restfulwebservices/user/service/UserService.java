@@ -1,6 +1,6 @@
 package com.example.restfulwebservices.user.service;
 
-import com.example.restfulwebservices.user.bean.User;
+import com.example.restfulwebservices.user.dao.User;
 
 import java.util.List;
 

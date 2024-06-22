@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.restfulwebservices.user.exception.UserNotFoundException;
-import com.example.restfulwebservices.user.bean.User;
+import com.example.restfulwebservices.user.dao.User;
 import com.example.restfulwebservices.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.inject.Inject;
+
 // this is controller.
 @RestController
 public class UserControllerJPA {
 
-    @Autowired
+    @Inject
     private UserRepository userRepository;
 
     @GetMapping("/jpa/users")

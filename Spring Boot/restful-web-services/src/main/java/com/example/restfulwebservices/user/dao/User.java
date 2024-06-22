@@ -1,4 +1,4 @@
-package com.example.restfulwebservices.user.bean;
+package com.example.restfulwebservices.user.dao;
 
 //import io.swagger.annotations.ApiModel;
 //import io.swagger.annotations.ApiModelProperty;
