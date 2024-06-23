@@ -1,16 +1,22 @@
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ParkingLot {
     private Slot[] fourWheelerSlots;
     private Slot[] twoWheelerSlots;
     private static ParkingLot instance;
 
+    private final Lock lock = new ReentrantLock();
+
 
     public static ParkingLot getInstance(int noOfTwoWheelerSlots, int noOfFourWheelerSlots) {
-        if (instance == null) {
-            instance = new ParkingLot(noOfTwoWheelerSlots, noOfFourWheelerSlots);
+        synchronized (ParkingLot.class) {
+            if (instance == null) {
+                instance = new ParkingLot(noOfTwoWheelerSlots, noOfFourWheelerSlots);
+            }
         }
         return instance;
     }
@@ -23,9 +29,14 @@ public class ParkingLot {
     }
 
     public Ticket parkAVehicle(Vehicle vehicle) throws ParkingFullException {
-        var nextAvailableSlot = this.getNextAvailableSlot(vehicle.getType());
-        nextAvailableSlot.setParkedVehicle(vehicle);
-        return generateTicket(vehicle, nextAvailableSlot);
+        lock.lock();
+        try {
+            var nextAvailableSlot = this.getNextAvailableSlot(vehicle.getType());
+            nextAvailableSlot.setParkedVehicle(vehicle);
+            return generateTicket(vehicle, nextAvailableSlot);
+        } finally {
+             lock.unlock();
+        }
     }
 
     private Ticket generateTicket(Vehicle vehicle, Slot nextAvailableSlot) {
@@ -58,13 +69,18 @@ public class ParkingLot {
     }
 
     public VehicleAndChargesToBePaid unPark(Ticket ticket, ParkingChargingStrategy parkingChargingStrategy) throws ParkingNotFoundException {
-        var parkedVehicleSlot = this.getParkedVehicleSlot(ticket);
-        Vehicle vehicle = parkedVehicleSlot.getParkedVehicle();
-        parkedVehicleSlot.vacateSlot();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        int parkedHours = this.getParkedHours( calendar.getTime() , new Date());
-        return new VehicleAndChargesToBePaid(vehicle, parkingChargingStrategy, parkedHours);
+        lock.lock();
+        try {
+            var parkedVehicleSlot = this.getParkedVehicleSlot(ticket);
+            Vehicle vehicle = parkedVehicleSlot.getParkedVehicle();
+            parkedVehicleSlot.vacateSlot();
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, -1);
+            int parkedHours = this.getParkedHours( calendar.getTime() , new Date());
+            return new VehicleAndChargesToBePaid(vehicle, parkingChargingStrategy, parkedHours);
+        } finally {
+             lock.unlock();
+        }
     }
 
     private Slot getParkedVehicleSlot(Ticket ticket) throws ParkingNotFoundException {
